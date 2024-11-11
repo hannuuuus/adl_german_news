@@ -1,0 +1,23 @@
+URLs,Headline,Body,Label
+
+must have in the end: type content title label(boolean array of fake, bias, truth, clickbait)
+
+Fake
+conspiracy
+junksci
+rumor
+unknown
+satire
+hate
+unreliable
+fake
+
+Bias
+bias
+
+Truth
+reliable
+political
+
+Clickbait
+clickbait
