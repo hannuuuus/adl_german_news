@@ -2,10 +2,10 @@ import json
 import csv
 import os
 
-json_folder_path = r'C:\github\news\news\german-news\data\all\krone\json'
+json_folder_path = r'C:\github\ADL\adl_german_news\crawler and data\data\all\compact_online\json'
 
 
-csv_output_file = 'krone.csv'
+csv_output_file = 'compact_online.csv'
 
 with open(csv_output_file, mode='w', newline='', encoding='utf-8') as csv_file:
     writer = csv.writer(csv_file)
