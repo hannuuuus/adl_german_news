@@ -1,6 +1,3 @@
-URLs,Headline,Body,Label
-
-must have in the end: type content title label(boolean array of fake, bias, truth, clickbait)
 
 Fake
 conspiracy

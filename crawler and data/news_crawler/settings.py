@@ -16,47 +16,21 @@ NEWSPIDER_MODULE = 'news_crawler.spiders'
 
 # Run spider until item count or timeout
 CLOSESPIDER_ITEMCOUNT = 1000
-CLOSESPIDER_TIMEOUT = 3600*24*3 # For topics 'refugees and migration', 'green deal'
-#CLOSESPIDER_TIMEOUT = 3600*24*5 # For topic 'klimawandel' with item_count=200
-#CLOSESPIDER_TIMEOUT = 3600*24*10 # For topic 'klimawandel' without item_count
-#CLOSESPIDER_TIMEOUT = 3600*24*9 # For topic 'Grundeinkommen', 'wind power', 'homeopathy', 'legalization_soft_drugs'
-
+CLOSESPIDER_TIMEOUT = 3600*24*3
 
 # Project-specific variables
 TOPIC = "all"
-#TOPIC = 'refugees_migration'
-#TOPIC = 'grundeinkommen'
-#TOPIC = 'green_deal'
-#TOPIC = 'wind_power'
-#TOPIC = 'homeopathy'
-#TOPIC = 'legalization_soft_drugs'
-#TOPIC = 'klimawandel'
 
-START_DATE = "01.01.2019" # For topics 'refugees and migration', 'klimawandel'
-#START_DATE = "01.01.2015" # For topics 'Grundeinkommen', 'wind power', 'homeopathy', 'legalization_soft_drugs'
-#START_DATE = "01.12.2019" # For topic 'green deal'
-#START_DATE = "21.10.2020" # For topic 'refugees and migration' 
 
-END_DATE = "19.10.2024" # For topic 'refugees and migration'
-#END_DATE = "16.12.2020" # For topic 'Grundeinkommen'
-#END_DATE = "31.01.2021" # For topics 'green deal', 'wind power', 'homeopathy', 'legalization_soft_drugs'
-#END_DATE = '30.11.2021' # For topic 'klimawandel'
-#END_DATE = '31.12.2021' # For topic 'refugees and migration'
+START_DATE = "01.01.2019"
+
+
+END_DATE = "19.10.2024"
 
 ARTICLE_LENGTH = 100
 KEYWORDS_MIN_FREQUENCY = 2
 KEYWORDS_MIN_DISTANCE = 5 #must be geq 1
 
-#KEYWORDS = ['flüchtl', 'geflücht', 'asyl', 'zuwander', 'immigrant', 'immigration', 'migration', 'migrant',  'ausländer', 'einwander', 'refug', 'rapefug', 'invasor'] # For topic 'refugees and migration'
-#KEYWORDS = ['grundeinkommen', 'bedingungslos einkommen'] # For topic 'Grundeinkommen'
-#KEYWORDS = ['green deal', 'eu green deal', 'eu grüne deal'] # For topic 'green deal'
-#KEYWORDS = ['windkraft', 'windenergie', 'windrad', 'windräder'] # For topic 'wind power'
-#KEYWORDS = ['homöopathie', 'globuli', 'alternativmedizin', 'alternativ medizin'] # For topic 'homeopathy'
-#KEYWORDS = [
-#        ['weich droge', 'soft drug', 'soft droge', 'entkriminalisierung'], 
-#        ['marihuana', 'cannabis', 'hanf', 'haschisch', 'tetrahydrocannabinol', 'thc', 'weed', 'psilocybin', 'psilocin', 'magic mushroom', 'zauberpilz', 'halluzinogen pilz'], 
-#        ['legal', 'entkriminalisierung']
-#        ] # For topic 'legalization_soft_drugs'
 KEYWORDS = ['klimawandel', 'klimaveränderung', 'klimaschutz', 'klimaziel', 'klimapolitik', 'klimakrise', 'klimaneutral',
             'klimafreundlich', 'erderwärmung', 'globale erwärmung', 'treibhauseffekt', 'kohlenstoffbudget', 'ipcc',
             'weltklima', 'un-klima', 'climate-engineering', 'fridays for future', 'klimastreik', 'cop26', 'glasgow climate conference',
@@ -126,8 +100,7 @@ KEYWORDS = ['klimawandel', 'klimaveränderung', 'klimaschutz', 'klimaziel', 'kli
             'swiss army', 'wehrpflicht schweiz', 'milizarmee schweiz', 'gdp', 'bip', 'bruttoinlandsprodukt', 'familie', 'regierung',
             'syrien', 'waffenruhe', '5g', 'afd', 'asyl', 'kriminell', 'ampel', 'leitkultur', 'kultur', 'nazi', 'greta', 'trump', 'xi'
             ]
-#KEYWORDS = ['klimawandel', 'klimaschutz', 'klimapolitik', 'klimaziel', 'klimakrise', 'klimaneutral',
-# 'erderwärmung', 'treibhauseffekt', 'ipcc', 'fossile brennstoffe', 'klima']
+
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'news_crawler (+http://www.yourdomain.com)'
@@ -136,31 +109,31 @@ KEYWORDS = ['klimawandel', 'klimaveränderung', 'klimaschutz', 'klimaziel', 'kli
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+# CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 5
 # The download delay setting will honor only one of:
-#CONCURRENT_REQUESTS_PER_DOMAIN = 16
-#CONCURRENT_REQUESTS_PER_IP = 16
+# CONCURRENT_REQUESTS_PER_DOMAIN = 16
+# CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
 COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
-#TELNETCONSOLE_ENABLED = False
+# TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
+# DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
-#}
+# }
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-#SPIDER_MIDDLEWARES = {
+# SPIDER_MIDDLEWARES = {
 #    'news_crawler.middlewares.MyCustomSpiderMiddleware': 543,
 #}
 

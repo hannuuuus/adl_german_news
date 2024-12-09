@@ -9,11 +9,9 @@ from datetime import datetime
 
 def setup_logging(name: str == __name__, log_level: str = None, to_file: bool = True) -> logging.Logger:
     """ Setup basic logging. """
-    
-    # Define logger
+
     logger = logging.getLogger(name)
     
-    # Set up log level and format
     log_level_init = logging.DEBUG if log_level=='debug' else logging.INFO
     log_format = '%(asctime)s %(levelname)s: %(message)s'
     
