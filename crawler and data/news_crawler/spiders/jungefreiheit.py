@@ -12,7 +12,6 @@ sys.path.insert(0, os.path.join(os.getcwd(), "..",))
 from news_crawler.items import NewsCrawlerItem
 from news_crawler.utils import remove_empty_paragraphs
 
-
 class Jungefreiheit(BaseSpider):
     """Spider for jungefreiheit"""
     name = 'jungefreiheit'
@@ -20,95 +19,91 @@ class Jungefreiheit(BaseSpider):
     allowed_domains = ['jungefreiheit.de']
     start_urls = ['https://jungefreiheit.de/']
 
-    # Exclude pages without relevant articles
     rules = (
-            Rule(
-                LinkExtractor(
-                    allow=(r'jungefreiheit\.de(\/\w.*)+\/\d*\/\w.*'),
-                    deny=(r'jungefreiheit\.de\/archiv\/',
-                        r'jungefreiheit\.de\/informationen\/',
-                        r'jungefreiheit\.de\/service\/',
-                        r'jungefreiheit\.de\/faq\/',
-                        r'jungefreiheit\.de\/aktuelle\-jf\/',
-                        r'jungefreiheit\.de\/datenschutzerklaerung\/',
-                        r'jungefreiheit\.de\/kategorie\/pressemitteilung\/'
-                        )
-                    ),
-                callback='parse_item',
-                follow=True
-                ),
-            )
+        Rule(
+            LinkExtractor(
+                allow=(r'jungefreiheit\.de(\/\w.*)+\/\d*\/\w.*'),
+                deny=(
+                    r'jungefreiheit\.de\/archiv\/',
+                    r'jungefreiheit\.de\/informationen\/',
+                    r'jungefreiheit\.de\/service\/',
+                    r'jungefreiheit\.de\/faq\/',
+                    r'jungefreiheit\.de\/aktuelle\-jf\/',
+                    r'jungefreiheit\.de\/datenschutzerklaerung\/',
+                    r'jungefreiheit\.de\/kategorie\/pressemitteilung\/'
+                )
+            ),
+            callback='parse_item',
+            follow=True
+        ),
+    )
 
     def parse_item(self, response):
         """
         Checks article validity. If valid, it parses it.
         """
-        # Check date validity
-        data_json = response.xpath('//script[@type="application/ld+json"]/text()').get()
-        data = json.loads(data_json)['@graph']
+        try:
+            data_json = response.xpath('//script[@type="application/ld+json"]/text()').get()
+            data = json.loads(data_json).get('@graph', [])
+        except (TypeError, ValueError):
+            data = []
 
-        # Extract the article's paragraphs
-        paragraphs = [node.xpath('string()').get().strip() for node in
-                      response.xpath('//div[@class="elementor-widget-container"]/p[not(@*)]')]
+        paragraphs = [
+            node.xpath('string()').get().strip() 
+            for node in response.xpath('//div[@class="elementor-widget-container"]/p[not(@*)]')
+        ]
         paragraphs = remove_empty_paragraphs(paragraphs)
-        text = ' '.join([para for para in paragraphs])
+        text = ' '.join(paragraphs)
 
-        # Check article's length validity
-        if not self.has_min_length(text):
+        if not self.has_min_length(text) or not self.has_valid_keywords(text):
             return
 
-        # Check keywords validity
-        if not self.has_valid_keywords(text):
-            return
-
-        # Parse the valid article
         item = NewsCrawlerItem()
-
-        item['news_outlet'] = 'jungefreiheit'
+        item['news_outlet'] = self.name
         item['provenance'] = response.url
         item['query_keywords'] = self.get_query_keywords()
 
-        # Get creation, modification, and crawling dates
         try:
-            last_modified = data[5].get('dateModified')
+            last_modified = next(
+                (entry.get('dateModified') for entry in data if 'dateModified' in entry),
+                None
+            )
             if last_modified:
                 item['last_modified'] = datetime.fromisoformat(last_modified.split('+')[0]).strftime('%d.%m.%Y')
-        except (IndexError, KeyError, ValueError):
-            item['last_modified'] = None  # Set to None or handle as appropriate
+            else:
+                item['last_modified'] = None
+        except ValueError:
+            item['last_modified'] = None
 
-        #item['last_modified'] = datetime.fromisoformat(last_modified.split('+')[0]).strftime('%d.%m.%Y')
         item['crawl_date'] = datetime.now().strftime('%d.%m.%Y')
 
-        # Get authors
-        authors = data[4]['name']
         try:
-            item['author_person'] = [authors['name']] if authors['name'] != 'JF' else list()
-        except (TypeError):
-            item['author_person'] = "JF"
-        try:
-            item['author_organization'] = [authors['name']] if authors['name'] == 'JF' else list()
-        except (TypeError):
-            item['author_organization'] = "JF"
+            authors = next(
+                (entry.get('name') for entry in data if 'name' in entry),
+                None
+            )
+            if authors == 'JF':
+                item['author_person'] = []
+                item['author_organization'] = ['JF']
+            else:
+                item['author_person'] = [authors] if authors else []
+                item['author_organization'] = []
+        except TypeError:
+            item['author_person'] = []
+            item['author_organization'] = []
 
-        # Extract keywords, if available
-        news_keywords = response.xpath('//meta[@property="article:tag"]/@content').getall()
-        item['news_keywords'] = news_keywords if news_keywords else list()
+        item['news_keywords'] = response.xpath('//meta[@property="article:tag"]/@content').getall() or []
 
-        # Set Open Graph metadata manually
         item['content'] = {
-            'title': "Darum wird Bayern mehr Illegale los",
-            'description': "Ein Grund zum Feiern für die CSU? Bayerns Innenminister Herrmann prahlt mit Erfolgszahlen bei den Rückführungen illegaler Ausländer – doch wie sieht das im Detail aus?",
+            'title': response.xpath('//title/text()').get(),
+            'description': response.xpath('//meta[@name="description"]/@content').get(),
             'body': {'': paragraphs},
-            'og:site_name': "JUNGE FREIHEIT",
-            'og:article:published_time': "2024-10-30T14:44:01+01:00"
+            'og:site_name': response.xpath('//meta[@property="og:site_name"]/@content').get(),
+            'og:article:published_time': response.xpath('//meta[@property="article:published_time"]/@content').get()
         }
 
-        # Extract first 5 recommendations towards articles from the same news outlet, if available
         recommendations = response.xpath("//a[@class='ee-media ee-post__media ee-post__media--content']/@href").getall()
-        if recommendations:
-            item['recommendations'] = recommendations[:5]
-        else:
-            item['recommendations'] = list()
+        item['recommendations'] = recommendations[:5] if recommendations else []
 
         item['response_body'] = response.body
 

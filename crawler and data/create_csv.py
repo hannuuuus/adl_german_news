@@ -2,9 +2,11 @@ import json
 import csv
 import os
 
+
+# change json folder path here
 json_folder_path = r'C:\github\ADL\adl_german_news\crawler and data\data\all\compact_online\json'
 
-
+# change output file name
 csv_output_file = 'compact_online.csv'
 
 with open(csv_output_file, mode='w', newline='', encoding='utf-8') as csv_file:
@@ -40,4 +42,4 @@ with open(csv_output_file, mode='w', newline='', encoding='utf-8') as csv_file:
                     ' '.join(data.get("content", {}).get("body", {}).get("", []))
                 ])
 
-print(f"Alle JSON-Dateien wurden erfolgreich in {csv_output_file} gespeichert.")
+print(f"All JSON-files were successfully saved in {csv_output_file} as .csv .")

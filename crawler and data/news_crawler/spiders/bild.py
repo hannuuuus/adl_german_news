@@ -111,6 +111,7 @@ class BildSpider(BaseSpider):
         description = response.xpath('//meta[@property="og:description"]/@content').get().strip()
 
         body = dict()
+        
         if response.xpath('//h2[@class="crossheading"]'):
 
             headlines = [h2.xpath('string()').get().strip() for h2 in response.xpath('//h2[@class="crossheading"]')]

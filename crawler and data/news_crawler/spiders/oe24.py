@@ -20,7 +20,7 @@ class Oe24Spider(BaseSpider):
     allowed_domains = ['oe24.at']
     start_urls = ['https://www.oe24.at/']
 
-    # Define rules for extracting article links and excluding irrelevant ones
+
     rules = (
         Rule(
             LinkExtractor(
@@ -42,17 +42,15 @@ class Oe24Spider(BaseSpider):
         """
         item = NewsCrawlerItem()
 
-        # Extract metadata from Open Graph tags
+
         title = response.xpath('//meta[@property="og:title"]/@content').get()
         description = response.xpath('//meta[@property="og:description"]/@content').get()
         url = response.xpath('//meta[@property="og:url"]/@content').get()
         self.logger.info(f"Parsing article: {response.url}")
 
-        # Verify the required metadata is available
         if not title or not description or not url:
             return
 
-        # Get publication date if available in metadata
         data_json = response.xpath('//script[@type="application/ld+json"]/text()').get()
         if data_json:
             try:
@@ -64,12 +62,11 @@ class Oe24Spider(BaseSpider):
                         return
                     item['creation_date'] = creation_date.strftime('%d.%m.%Y')
                 else:
-                    return  # Skip if no valid date is available
+                    return
             except (json.JSONDecodeError, ValueError):
                 self.logger.error("Error parsing JSON data.")
                 return
 
-        # Assign other metadata fields to the item
         item['title'] = title
         item['description'] = description
         item['url'] = url
@@ -84,8 +81,6 @@ class Oe24Spider(BaseSpider):
         if date_str.endswith('Z'):
             date_str = date_str[:-1]
         try:
-            # Try parsing with datetime.fromisoformat
             return datetime.fromisoformat(date_str)
         except ValueError:
-            # If parsing fails, raise the error to be handled in parse_item
             raise ValueError(f"Invalid date format for '{date_str}'")

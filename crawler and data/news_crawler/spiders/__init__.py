@@ -53,7 +53,7 @@ class BaseSpider(CrawlSpider):
         self.keywords_combinations = self.keywords if type(self.keywords[0])==list else list()
         
         if not self.keywords_combinations:
-            # Check if there are compound keywords (e.g. bedingungslos* einkommen*), and if so, separate single-token and multiple-token keywords
+            # Check if there are compound keywords
             self.compound_keywords = [keyword for keyword in self.keywords if len(keyword.split())>1]
             if self.compound_keywords:
                 self.keywords = [keyword for keyword in self.keywords if not keyword in self.compound_keywords]
@@ -133,7 +133,7 @@ class BaseSpider(CrawlSpider):
         # Extract matching positions and tokens
         matching_pos_tokens = [(tokens.index(token), token) for token in tokens if any(keyword in token for keyword in self.keywords)]
 
-        # Extract matching positions and tokens for compound keyword stems (e.g. bedingungslos* einkommen*)
+        # Extract matching positions and tokens for compound keywords
         compound_query_keywords = list()
 
         if self.compound_keywords:

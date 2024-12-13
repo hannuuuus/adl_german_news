@@ -20,7 +20,7 @@ class Vice(BaseSpider):
     allowed_domains = ['www.vice.com']
     start_urls = ['https://www.vice.com/de/']
 
-    # Exclude pages without relevant articles
+
     rules = (
             Rule(
                 LinkExtractor(
@@ -41,7 +41,6 @@ class Vice(BaseSpider):
         Checks article validity. If valid, it parses it.
         """
        
-        # Check date validity
         data_json = response.xpath("//script[@type='application/ld+json']/text()").get()
         if not data_json:
             return
@@ -56,33 +55,27 @@ class Vice(BaseSpider):
         if self.is_out_of_date(creation_date):
             return
 
-        # Extract the article's paragraphs
         paragraphs = [node.xpath('string()').get().strip() for node in response.xpath('//div[@class="article__body-components"]//p[not(ancestor::div[@class="body-image__caption"])]')]
         paragraphs = remove_empty_paragraphs(paragraphs)
         text = ' '.join([para for para in paragraphs])
 
-        # Check article's length validity
         if not self.has_min_length(text):
             return
 
-        # Check keywords validity
         if not self.has_valid_keywords(text):
             return
 
-        # Parse the valid article
         item = NewsCrawlerItem()
 
         item['news_outlet'] = 'vice'
         item['provenance'] = response.url
         item['query_keywords'] = self.get_query_keywords()
 
-        # Get creation, modification, and crawling dates
         item['creation_date'] = creation_date.strftime('%d.%m.%Y')
         last_modified = data['dateModified']
         item['last_modified'] = datetime.fromisoformat(last_modified.split('T')[0]).strftime('%d.%m.%Y')
         item['crawl_date'] = datetime.now().strftime('%d.%m.%Y')
 
-        # Get authors
         authors = data['author']
         if authors:
             item['author_person'] = [authors['name']] if authors['@type']=='Person' else list()
@@ -91,7 +84,6 @@ class Vice(BaseSpider):
             item['author_person'] = list()
             item['author_organization'] = list()
 
-        # Extract keywords, if available
         targeting_data = response.xpath('//div[@class="vice-ad__ad"]/@data-targeting').get()
         if targeting_data is not None:
             targeting_data = json.loads(targeting_data)
@@ -100,27 +92,22 @@ class Vice(BaseSpider):
         else:
             item['news_keywords'] = list()
 
-        # Get title, description, and body of article
         title = response.xpath('//meta[@property="og:title"]/@content').get()
         description = response.xpath('//meta[@property="og:description"]/@content').get()
 
         # Body as dictionary: key = headline (if available, otherwise empty string), values = list of corresponding paragraphs
         body = dict()
         if response.xpath('//h2[@class="article__body-heading__heading heading2"]/span'):
-            # Extract headlines
+
             headlines = [h2.xpath('string()').get().strip() for h2 in response.xpath('//h2[@class="article__body-heading__heading heading2"]/span')]
 
-            # Extract the paragraphs and headlines together
             text = [node.xpath('string()').get().strip() for node in response.xpath('//div[@class="article__body-components"]//p[not(ancestor::div[@class="body-image__caption"])] | //h2[@class="article__body-heading__heading heading2"]/span')]
-          
-            # Extract paragraphs between the abstract and the first headline
+
             body[''] = remove_empty_paragraphs(text[:text.index(headlines[0])])
 
-            # Extract paragraphs corresponding to each headline, except the last one
             for i in range(len(headlines)-1):
                 body[headlines[i]] = remove_empty_paragraphs(text[text.index(headlines[i])+1:text.index(headlines[i+1])])
 
-            # Extract the paragraphs belonging to the last headline
             body[headlines[-1]] = remove_empty_paragraphs(text[text.index(headlines[-1])+1:])
 
         else:
@@ -129,7 +116,6 @@ class Vice(BaseSpider):
 
         item['content'] = {'title': title, 'description': description, 'body':body}
 
-        # Extract first 5 recommendations towards articles from the same news outlet, if available
         item['recommendations'] = list()
 
         item['response_body'] = response.body

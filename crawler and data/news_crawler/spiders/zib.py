@@ -14,13 +14,12 @@ from news_crawler.utils import remove_empty_paragraphs
 
 class KroneSpider(BaseSpider):
     """Spider for orf.at/stories"""
-    #nvm they dont allow :'(
+    #nvm they dont allow
     name = 'zib'
     rotate_user_agent = True
     allowed_domains = ['www.orf.at']
     start_urls = ['https://www.orf.at/']
 
-    # Define rules to follow relevant article URLs
     rules = (
         Rule(
             LinkExtractor(
