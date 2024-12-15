@@ -14,13 +14,12 @@ from news_crawler.utils import remove_empty_paragraphs
 
 class KroneSpider(BaseSpider):
     """Spider for falter"""
-    #after writing i realized they dont allow it :'(
+    #after adjusting i realized they dont allow it 
     name = 'zib'
     rotate_user_agent = True
     allowed_domains = ['www.orf.at']
     start_urls = ['https://www.orf.at/']
 
-    # Define rules to follow relevant article URLs
     rules = (
         Rule(
             LinkExtractor(
@@ -55,7 +54,7 @@ class KroneSpider(BaseSpider):
         if not self.has_min_length(text):
             return
 
-        # Check keywords validity
+        # Check keywords
         if not self.has_valid_keywords(text):
             return
 
