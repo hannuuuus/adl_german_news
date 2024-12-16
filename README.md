@@ -15,10 +15,10 @@ In the folder spiders there are spiders for the certain news outlets.
 Some of them crawl but don't scrape. I think this is due to the robots.txt file, that the crawler obeys.
 As of the beginning of December 2024 all crawlers work on the websites.
 
-- \crawler and data\data\all
+- \crawler and data\data\all\
 This is where the html and json the webscrapers produce, are saved.
 
-- \crawler and data\clean_data
+- \crawler and data\clean_data\
 This is where I saved these raw data files as csv.
 and further as .xlsx (as i read through the news in this format, it is easier for me to just add columns and mark each news article like that)
 
@@ -31,17 +31,17 @@ and further as .xlsx (as i read through the news in this format, it is easier fo
 - adl_algorithm: is where I tried a simple DL algorithm on my data to show how to work with it
 
 Now to the data itself:
-news_outlet: A string of the name of the news outlet.
-provenance: a url of the article
-query_keywords: keywords from a list i created that the crawler would scrape the page, so these were actually found in the article and triggered the scraping
-creation_date: of the article
-last_modified: date of the article
-crawl_date: crawl date
-author_person: author
-author_organization: authr orgnisation
-news_keywords: if given, the article itself would sometimes contain this section, so these keywords are from the author
-title: title
-description: if given, the short version of the article, that is usually found in the first paragraph
+news_outlet: A string of the name of the news outlet.\
+provenance: a url of the article\
+query_keywords: keywords from a list i created that the crawler would scrape the page, so these were actually found in the article and triggered the scraping\
+creation_date: of the article\
+last_modified: date of the article\
+crawl_date: crawl date\
+author_person: author\
+author_organization: authr orgnisation\
+news_keywords: if given, the article itself would sometimes contain this section, so these keywords are from the author\
+title: title\
+description: if given, the short version of the article, that is usually found in the first paragraph\
 body: the actual article
 fake news: label of either 0/1
 extreme bias: label of either 0/1
