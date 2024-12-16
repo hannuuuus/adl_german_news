@@ -9,16 +9,17 @@ from scrapy import Item, Field
 
 
 class NewsCrawlerItem(Item):
-    """ Model for the scraped items. """
+    """Model for the scraped items."""
+
     news_outlet = Field()
-    provenance = Field() # url
+    provenance = Field()  # url
     author_person = Field()
     author_organization = Field()
     creation_date = Field()
     last_modified = Field()
-    crawl_date = Field() 
-    content = Field() # title, description, body
+    crawl_date = Field()
+    content = Field()  # title, description, body
     news_keywords = Field()
     recommendations = Field()
     query_keywords = Field()
-    response_body = Field() # Stores response body to be saved as html
+    response_body = Field()  # Stores response body to be saved as html

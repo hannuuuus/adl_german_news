@@ -5,9 +5,9 @@ from typing import List
 
 
 def remove_empty_paragraphs(paragraphs: List[str]) -> List[str]:
-    """ 
-    Removes empty paragraphs from a list of paragraphs. 
-    
+    """
+    Removes empty paragraphs from a list of paragraphs.
+
     Args:
         paragraphs (:obj:`List[str]`):
             A list of paragraphs.
@@ -16,4 +16,4 @@ def remove_empty_paragraphs(paragraphs: List[str]) -> List[str]:
         :obj:`List[str]`:
             The list of paragraphs without empty paragraphs.
     """
-    return [para for para in paragraphs if para != ' ' and para != '']
+    return [para for para in paragraphs if para != " " and para != ""]
