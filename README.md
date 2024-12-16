@@ -1,33 +1,33 @@
 # adl_german_news
 This repository contains my Applied Deep Learning Project that collects data from German speaking news outlets
+Please find detailed information in the file assignment2.pdf.
 
-(forgive me for the naming, I did not think it through and dont want to change all paths in the code)
 The structure of this repository is as follows:
 
 the files in crawler and data:
 - create.csv is to turn the scraped json into csv
 - german_fake_news_data.csv is the finished product, the dataset
-- requirements.txt are the dependencies
+- requirements.txt are the dependencies\
 the other 2 files are for the scrapy project, that are automatically created
 
-- \crawler and data\news_crawler: contains all code for the webcrawlers
-In the folder spiders there are spiders for the certain news outlets.
-Some of them crawl but don't scrape. I think this is due to the robots.txt file, that the crawler obeys.
+-  crawler and data\data\scrapy_raw_data\
+Contains the raw json and html files that the scrapers produce. Divided by news outlet.
 As of the beginning of December 2024 all crawlers work on the websites.
 
-- \crawler and data\data\all\
-This is where the html and json the webscrapers produce, are saved.
+- \crawler and data\data\scrapy_csv_xlsx_data\
+The csv and xlsx of these json files. I labelled these files this way manually.
 
-- \crawler and data\clean_data\
-This is where I saved these raw data files as csv.
-and further as .xlsx (as i read through the news in this format, it is easier for me to just add columns and mark each news article like that)
+- \crawler and data\data\data_ready_for_analysis\
+The csv divided on whether they are labelled and news outlet. This structure made it easy to load them into the data analysis pipelines.
 
-- in src\preprocess data:
+
+- \crawler and data\data\fully_labelled_data\
+The two final files where all data is labelled (manually and not).
+
+in src\preprocess data:
 
 - pipelines_eda: are data analysis for each csv of manually labelled data
-- labelling_approaches: is where you can find what I tried to automatically label the rest of the data
-- fully_labelled_data: is where I saved the manually labelled data file and the automatically labelled one
-- data_ready_for_analysis: is where i stored the csv that are divided by unlabelled/labelled and per news outlet
+- labelling_approaches: is where you can find what I tried to automatically label the rest of the data. The final approach I used is multiclass_labelling.py
 - adl_algorithm: is where I tried a simple DL algorithm on my data to show how to work with it
 
 Now to the data itself:
