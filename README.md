@@ -48,3 +48,10 @@ extreme bias: label of either 0/1
 clickbait: label of either 0/1
 credible: label of either 0/1
 body_len: length of the body
+
+run the application by directing to where the application.py file is located and run either
+- python application.py --model_type fine_tuned_model
+- python application.py --model_type full_data_model
+- python application.py --model_type two_label_model
+
+depending on the model
