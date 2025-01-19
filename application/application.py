@@ -7,15 +7,15 @@ import pickle
 import os
 
 MODEL_PATHS = {
-    "fine_tuned_model": r"C:\github\ADL\adl_german_news\crawler and data\src\preprocess data\adl_algorithm\fine_tuned_model.h5",
-    "full_data_model": r"C:\github\ADL\adl_german_news\crawler and data\src\preprocess data\adl_algorithm\full_data_model.h5",
-    "two_label_model": r"C:\github\ADL\adl_german_news\crawler and data\src\preprocess data\adl_algorithm\two_label_model.h5",
+    "fine_tuned_model": r"crawler and data\src\preprocess data\adl_algorithm\fine_tuned_model.h5",
+    "full_data_model": r"crawler and data\src\preprocess data\adl_algorithm\full_data_model.h5",
+    "two_label_model": r"crawler and data\src\preprocess data\adl_algorithm\two_label_model.h5",
 }
 
 VECTORIZER_PATHS = {
-    "full_data_model": r"C:\github\ADL\adl_german_news\crawler and data\src\preprocess data\adl_algorithm\tfidf_vectorizer.pkl",
-    "fine_tuned_model": r"C:\github\ADL\adl_german_news\crawler and data\src\preprocess data\adl_algorithm\tfidf_vectorizer_fine_tuned.pkl",
-    "two_label_model": r"C:\github\ADL\adl_german_news\crawler and data\src\preprocess data\adl_algorithm\tfidf_vectorizer_two_labels.pkl"
+    "full_data_model": r"crawler and data\src\preprocess data\adl_algorithm\tfidf_vectorizer.pkl",
+    "fine_tuned_model": r"crawler and data\src\preprocess data\adl_algorithm\tfidf_vectorizer_fine_tuned.pkl",
+    "two_label_model": r"crawler and data\src\preprocess data\adl_algorithm\tfidf_vectorizer_two_labels.pkl"
 }
 
 
